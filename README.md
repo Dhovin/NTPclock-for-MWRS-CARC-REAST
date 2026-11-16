@@ -7,7 +7,7 @@
 
 Dual UTC/Local NTP Clock with TFT display. Time is refreshed via NTP and/or an optional GPS receiver, with status indicators for time freshness, Wi-Fi strength, supply/battery voltage, solar weather, local environmental data (BME280/BMP280), internet weather, and Maidenhead Grid Square (MLS).
 
-For full operating instructions, button functions, and web configuration details, see [Software documentation/20261104 - NTPclock Software Documentation.pdf](Software%20documentation/20261104%20-%20NTPclock%20Software%20Documentation.pdf). For full revision history, see [README.txt](README.txt).
+For full operating instructions, button functions, and web configuration details, see [Software documentation/20261104 - NTPclock Software Documentation.pdf](Software%20documentation/20261104%20-%20NTPclock%20Software%20Documentation.pdf). For background on Bruce Hall's original design and `TFT_eSPI` setup concepts, see [W8BH NTP_DualClock.pdf](https://w8bh.net/NTP_DualClock.pdf) *(note: that original PDF targets the older ESP32-WROOM-32 pinout; use the pinouts in [tft_setup.h](tft_setup.h) for this repo)*. For full revision history, see [README.txt](README.txt).
 
 ---
 
@@ -50,8 +50,27 @@ For full operating instructions, button functions, and web configuration details
 
 ---
 
-### Step 3: Install ESP32 Board Support in Arduino IDE
+### Steps 3 & 4: Install ESP32 Board Support & Libraries
 
+You can install the ESP32 board package and all 12 required libraries **automatically** using Arduino CLI (recommended), or **manually** in the Arduino IDE GUI. Both methods install into the exact same Arduino folders.
+
+#### Option A: Automated Install with `arduino-cli` (Recommended)
+
+1. Install **Arduino CLI**: [https://arduino.github.io/arduino-cli/latest/installation/](https://arduino.github.io/arduino-cli/latest/installation/) (on Windows, `winget install ArduinoSA.CLI`; on macOS, `brew install arduino-cli`).
+2. Run the included installer script from the repository folder:
+   - **Windows (PowerShell):**
+     ```powershell
+     .\install_deps.ps1
+     ```
+   - **macOS / Linux:**
+     ```bash
+     chmod +x install_deps.sh && ./install_deps.sh
+     ```
+   This automatically adds the Espressif board URL, installs `esp32:esp32@3.3.10`, and installs all 12 libraries at their tested versions.
+
+#### Option B: Manual Install in Arduino IDE
+
+##### 3a. ESP32 Board Support
 1. Open **Arduino IDE**.
 2. Go to **File > Preferences** (on macOS: **Arduino IDE > Settings**).
 3. Find **Additional Boards Manager URLs** and paste:
@@ -64,9 +83,7 @@ For full operating instructions, button functions, and web configuration details
 6. Search for **`esp32`** and install **`esp32` by Espressif Systems** (tested with version **`3.3.10`**).
    - Reference docs: [Espressif Arduino-ESP32 Installation Guide](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html)
 
----
-
-### Step 4: Install Required Arduino Libraries
+##### 3b. Required Arduino Libraries
 
 In Arduino IDE, open **Sketch > Include Library > Manage Libraries...** (or click the **Library Manager** icon in the left sidebar) and install each of the following libraries (tested versions shown):
 
