@@ -92,9 +92,8 @@ If you used Option A, skip ahead to **Step 4**.
    | **Adafruit BMP280 Library** | Adafruit | `3.0.0` | [GitHub](https://github.com/adafruit/Adafruit_BMP280_Library) — click **Install all** |
 
 3. **Configure `TFT_eSPI` Display Pins (`User_Setup.h`):**
-   - Open `<Sketchbook location>/libraries/TFT_eSPI/User_Setup.h` (typically `Documents/Arduino/libraries/TFT_eSPI/User_Setup.h`; check **File > Preferences > Sketchbook location** in Arduino IDE).
-   - Ensure `#define ILI9341_DRIVER`, `#define USE_HSPI_PORT`, and the fonts (`LOAD_GLCD`, `LOAD_FONT2/4/6/7/8`, `LOAD_GFXFF`) are uncommented.
-   - Replace the default `TFT_MISO`/`TFT_MOSI`/`TFT_SCLK`/`TFT_CS`/`TFT_DC`/`TFT_RST` pin definitions with the CARC v4 pins:
+   - **Quickest manual method:** Copy [TFT_eSPI_User_Setup.h](TFT_eSPI_User_Setup.h) from this repository over `<Sketchbook location>/libraries/TFT_eSPI/User_Setup.h` (typically `Documents/Arduino/libraries/TFT_eSPI/User_Setup.h`; check **File > Preferences > Sketchbook location** in Arduino IDE).
+   - **Or edit `User_Setup.h` by hand:** Ensure `#define ILI9341_DRIVER`, `#define USE_HSPI_PORT`, and the fonts (`LOAD_GLCD`, `LOAD_FONT2/4/6/7/8`, `LOAD_GFXFF`) are uncommented, and replace the default `TFT_MISO`/`TFT_MOSI`/`TFT_SCLK`/`TFT_CS`/`TFT_DC`/`TFT_RST` pin definitions with the CARC v4 pins:
      ```cpp
      #define TFT_MOSI  11
      #define TFT_MISO  12
