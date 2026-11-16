@@ -93,8 +93,8 @@ In Arduino IDE, open **Sketch > Include Library > Manage Libraries...** (or clic
 | **ezTime** | Rop Gonggrijp | `0.8.3` | [GitHub](https://github.com/ropg/ezTime) |
 | **ArduinoJson** | Benoit Blanchon | `7.4.3` | [arduinojson.org](https://arduinojson.org/) |
 | **Button2** | Lennart Hennigs | `2.7.0` | [GitHub](https://github.com/LennartHennigs/Button2) |
-| **ESPAsyncWebServer** | ESP32Async | `3.12.1` | [GitHub](https://github.com/ESP32Async/ESPAsyncWebServer) |
-| **AsyncTCP** | ESP32Async | `3.5.0` | [GitHub](https://github.com/ESP32Async/AsyncTCP) |
+| **ESP Async WebServer** | ESP32Async | `3.12.1` | [GitHub](https://github.com/ESP32Async/ESPAsyncWebServer) |
+| **Async TCP** | ESP32Async | `3.5.0` | [GitHub](https://github.com/ESP32Async/AsyncTCP) |
 | **TinyGPSPlus** | Mikal Hart | `1.0.3` | [GitHub](https://github.com/mikalhart/TinyGPSPlus) |
 | **SparkFun u-blox GNSS Arduino Library** | SparkFun Electronics | `2.2.29` | [GitHub](https://github.com/sparkfun/SparkFun_u-blox_GNSS_Arduino_Library) |
 | **EspSoftwareSerial** | Dirk Kaar | `8.1.0` | [GitHub](https://github.com/plerup/espsoftwareserial) |
@@ -126,11 +126,15 @@ Open [tft_setup.h](tft_setup.h) and uncomment **only** the line that matches you
 
 ---
 
-### Step 6: Configure `TFT_eSPI` Display Pins
+### Step 6: Configure `TFT_eSPI` Display Pins (`User_Setup.h`)
 
-Because `TFT_eSPI` is compiled as a separate library, it reads its pin settings from `User_Setup.h` inside your Arduino libraries folder (typically `Documents/Arduino/libraries/TFT_eSPI/User_Setup.h`), **not** from the sketch's `tft_setup.h`.
+Because `TFT_eSPI` is compiled as a separate library, it reads its pin settings from **`User_Setup.h`** inside your installed `TFT_eSPI` library folder — **not** from `TFT_eSPI.h` and **not** from the sketch's `tft_setup.h`.
 
-Open `Documents/Arduino/libraries/TFT_eSPI/User_Setup.h` and make sure the active driver, SPI port, pins, color order, and fonts match your selected target in [tft_setup.h](tft_setup.h):
+> **Note:** The `TFT_eSPI` library folder is only created **after** you complete Steps 3 & 4 (installing `TFT_eSPI` via `install_deps.ps1`/`install_deps.sh` or Arduino IDE Library Manager).
+> - **Default location:** `Documents/Arduino/libraries/TFT_eSPI/User_Setup.h`
+> - **If you don't see it there:** In Arduino IDE, check **File > Preferences > Sketchbook location**, then open `<Sketchbook location>/libraries/TFT_eSPI/User_Setup.h` (or run `arduino-cli config dump` to check `directories.user`).
+
+Open `User_Setup.h` and make sure the active driver, SPI port, pins, color order, and fonts match your selected target in [tft_setup.h](tft_setup.h):
 
 1. Ensure these common options are enabled:
    ```cpp

@@ -6,8 +6,11 @@ $ErrorActionPreference = "Stop"
 if (-not (Get-Command arduino-cli -ErrorAction SilentlyContinue)) {
     Write-Host "arduino-cli not found. Installing via winget..." -ForegroundColor Yellow
     winget install ArduinoSA.CLI
-    Write-Host "Please restart your terminal so arduino-cli is on PATH, then re-run this script." -ForegroundColor Cyan
-    exit 0
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+    if (-not (Get-Command arduino-cli -ErrorAction SilentlyContinue)) {
+        Write-Host "Please restart your terminal so arduino-cli is on PATH, then re-run this script." -ForegroundColor Cyan
+        exit 0
+    }
 }
 
 Write-Host "Configuring Arduino CLI..." -ForegroundColor Cyan
@@ -25,8 +28,8 @@ $libraries = @(
     "ezTime@0.8.3",
     "ArduinoJson@7.4.3",
     "Button2@2.7.0",
-    "ESPAsyncWebServer@3.12.1",
-    "AsyncTCP@3.5.0",
+    "ESP Async WebServer@3.12.1",
+    "Async TCP@3.5.0",
     "TinyGPSPlus@1.0.3",
     "SparkFun u-blox GNSS Arduino Library@2.2.29",
     "EspSoftwareSerial@8.1.0",
