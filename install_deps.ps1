@@ -1,4 +1,4 @@
-# Automated dependency installer for NTP Dual Clock (Windows PowerShell)
+# Automated dependency & display-pin installer for NTP Dual Clock (CARC v4 / ESP32-S3-mini)
 # Requires Arduino CLI: https://arduino.github.io/arduino-cli/latest/installation/
 
 $ErrorActionPreference = "Stop"
@@ -43,5 +43,34 @@ foreach ($lib in $libraries) {
     arduino-cli lib install "$lib"
 }
 
-Write-Host "`nAll board packages and libraries installed!" -ForegroundColor Green
-Write-Host "Next: configure TFT_eSPI's User_Setup.h (Step 6 in README.md) and select your target in tft_setup.h." -ForegroundColor Yellow
+# Configure TFT_eSPI User_Setup.h for CARC_V4_ESP32S3_MINI
+$userDir = (arduino-cli config get directories.user 2>$null)
+if (-not $userDir) { $userDir = Join-Path $env:USERPROFILE "Documents\Arduino" }
+$userSetup = Join-Path $userDir "libraries\TFT_eSPI\User_Setup.h"
+
+if (Test-Path $userSetup) {
+    Write-Host "Configuring TFT_eSPI User_Setup.h for CARC v4 (ESP32-S3-mini)..." -ForegroundColor Cyan
+    $content = Get-Content $userSetup -Raw
+    if ($content -notmatch "CARC_V4_ESP32S3_MINI") {
+        $carcPins = @"
+// CARC_V4_ESP32S3_MINI display pins (matching NTP_Dual_Clock_MWRS_V4_x/tft_setup.h)
+#define TFT_MOSI  11
+#define TFT_MISO  12
+#define TFT_SCLK  13
+#define TFT_RST    5
+#define TFT_CS     6
+#define TFT_DC     7
+#define TFT_RGB_ORDER TFT_BRG
+"@
+        $content = $content -replace "(?s)// For NodeMCU - use pin numbers.*?#define TFT_RST\s+PIN_D4[^\r\n]*", $carcPins
+        $content = $content -replace "//#define USE_HSPI_PORT", "#define USE_HSPI_PORT"
+        Set-Content -Path $userSetup -Value $content -NoNewline
+        Write-Host "Updated $userSetup" -ForegroundColor Green
+    } else {
+        Write-Host "User_Setup.h already configured for CARC_V4_ESP32S3_MINI." -ForegroundColor Green
+    }
+} else {
+    Write-Warning "Could not find $userSetup. Please configure TFT_eSPI User_Setup.h manually (see README.md)."
+}
+
+Write-Host "`nSetup complete! Open NTP_Dual_Clock_MWRS_V4_x/NTP_Dual_Clock_MWRS_V4_x.ino in Arduino IDE." -ForegroundColor Green
